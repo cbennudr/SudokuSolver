@@ -1,7 +1,7 @@
 #master function that will call specific check functions if their rule set is selected
 def check(grid, rules):
     if ("normalSudokuRules" in rules):
-        checkNormalSudoku(grid) 
+        return checkNormalSudoku(grid)
 
 #function to check the board using normal sudoku rules
 def checkNormalSudoku(grid):
@@ -22,9 +22,9 @@ def checkBoxes(grid):
             vals = []
             for l in boxList:
                 for val in l:
-                    vals.append(val)
-            
-            if list(set(vals)) == sorted(vals):
+                    if val != 0:
+                        vals.append(val)
+            if sorted(list(set(vals))) == sorted(vals):
                 continue
             else:
                 return False
@@ -34,18 +34,34 @@ def checkRows(grid):
     for row in grid:
         rowList = []
         for cell in row:
-            if cell not in rowList:
-                rowList.append(cell) 
-            else:
-                return False
+            #ignore 0s
+            if cell != 0:
+                if cell not in rowList:
+                    rowList.append(cell) 
+                else:
+                    return False
     return True
 
 def checkColumns(grid):
     for i in range(9):
         columnList = []
         for j in range(9):
-            if grid[j][i] not in columnList:
-                columnList.append(grid[j][i])
-            else:
-                return False
+            if grid[j][i] != 0:
+                if grid[j][i] not in columnList:
+                    columnList.append(grid[j][i])
+                else:
+                    return False
     return True
+
+# rules = ["normalSudokuRules"]
+# unsolvedTestGrid = [
+#     [0, 0, 0, 2, 6, 0, 7, 0, 1],
+#     [6, 8, 0, 0, 7, 0, 0, 9, 0],
+#     [1, 9, 0, 0, 0, 4, 5, 0, 0],
+#     [8, 2, 0, 1, 0, 0, 0, 4, 0],
+#     [0, 0, 4, 6, 0, 2, 9, 0, 0],
+#     [0, 5, 0, 0, 0, 3, 0, 2, 8],
+#     [0, 0, 9, 3, 0, 0, 0, 7, 4],
+#     [0, 4, 0, 0, 5, 0, 0, 3, 6],
+#     [7, 0, 3, 0, 1, 8, 0, 0, 0]]
+# print(check(unsolvedTestGrid, rules))
